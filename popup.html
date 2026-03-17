@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube 中文朗读助手</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap');
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  width: 240px;
+  font-family: 'Noto Sans SC', 'PingFang SC', sans-serif;
+  background: #0f0f17;
+  color: #e0e0f0;
+  font-size: 13px;
+}
+.header {
+  background: linear-gradient(135deg, rgba(99,102,241,0.4), rgba(168,85,247,0.25));
+  padding: 16px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.header h1 { font-size: 15px; font-weight: 700; color: #c4b5fd; letter-spacing: 0.02em; }
+.header p { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 4px; }
+.body { padding: 16px; }
+.tip {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 12px;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.6);
+  font-size: 12px;
+}
+.tip strong { color: #a78bfa; }
+.step { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+.step-num {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.step-num.done { background: linear-gradient(135deg, #16a34a, #4ade80); }
+.step-text { font-size: 12px; line-height: 1.6; color: rgba(255,255,255,0.6); padding-top: 2px; }
+.step-text strong { color: #c4b5fd; }
+.divider { height: 1px; background: rgba(255,255,255,0.06); margin: 12px 0; }
+.badge-row { display: flex; gap: 6px; justify-content: center; margin-bottom: 12px; }
+.badge {
+  font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 700;
+  background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.25); color: #818cf8;
+}
+.badge-free {
+  font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 700;
+  background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2); color: #4ade80;
+}
+.footer { padding: 10px 16px 14px; text-align: center; font-size: 11px; color: rgba(255,255,255,0.2); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🔊 中文朗读助手</h1>
+  <p>YouTube 中文字幕 · 神经网络朗读</p>
+</div>
+
+<div class="body">
+  <div class="tip">
+    打开任意 <strong>YouTube 视频页面</strong>，悬浮面板会自动出现在右侧。
+  </div>
+
+  <div class="badge-row">
+    <span class="badge">⚡ Google Web Speech</span>
+    <span class="badge-free">完全免费</span>
+  </div>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-text">开启 YouTube <strong>中文字幕</strong>，点「抓取页面字幕」</div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-text">点「<strong>开始朗读</strong>」，等待进度条完成</div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-text">勾选「<strong>关闭原视频声音</strong>」，点「开始朗读」</div>
+  </div>
+  <div class="step">
+    <div class="step-num done">✓</div>
+    <div class="step-text">精准同步中文朗读，流畅无延迟 🎉</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tip" style="font-size:11px; color:rgba(255,255,255,0.4);">
+    💡 切换语音或语速后需重新生成音频
+  </div>
+</div>
+
+<div class="footer">v4.0 · Chrome Extension · YouTube Only</div>
+
+</body>
+</html>

@@ -1,0 +1,291 @@
+/* YouTube 中文朗读助手 v4.0 — Google Web Speech */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
+
+#yt-cn-panel {
+  position: fixed;
+  top: 80px; right: 20px;
+  width: 288px;
+  z-index: 2147483647;
+  font-family: 'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+  font-size: 12.5px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(13,12,22,0.97);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: #eeeeff;
+  user-select: none;
+}
+
+/* 标题栏 */
+#yt-cn-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 13px;
+  background: rgba(55,48,115,0.45);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  cursor: grab;
+}
+#yt-cn-htitle {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 12.5px; font-weight: 700; color: #c4b5fd;
+}
+#yt-cn-htitle svg { stroke: #c4b5fd; }
+#yt-cn-hbts { display: flex; gap: 4px; }
+#yt-cn-hbts button {
+  width: 20px; height: 20px; background: rgba(255,255,255,.07); border: none;
+  color: rgba(255,255,255,.4); border-radius: 5px; cursor: pointer;
+  font-size: 10px; display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+}
+#yt-cn-hbts button:hover { background: rgba(255,255,255,.16); color: #fff; }
+
+/* 主体 */
+#yt-cn-body { padding: 2px 0 8px; max-height: 520px; overflow-y: auto; }
+#yt-cn-body::-webkit-scrollbar { width: 3px; }
+#yt-cn-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 2px; }
+
+/* Section */
+.yc-sec { padding: 10px 13px; border-bottom: 1px solid rgba(255,255,255,.05); }
+.yc-sec:last-child { border-bottom: none; }
+.yc-sec-t {
+  font-size: 10px; font-weight: 700; letter-spacing: .09em;
+  text-transform: uppercase; color: rgba(255,255,255,.28); margin-bottom: 8px;
+}
+
+/* 状态 */
+.yc-hint-bar { font-size: 11px; color: rgba(255,255,255,.4); margin-top: 7px; line-height: 1.5; }
+.yc-st-ok      { color: #4ade80 !important; }
+.yc-st-err     { color: #f87171 !important; }
+.yc-st-loading { color: #facc15 !important; }
+.yc-st-live    { color: #fb923c !important; }
+
+/* 按钮行 */
+.yc-row { display: flex; gap: 7px; margin-bottom: 6px; }
+
+.yc-btn-sec {
+  flex: 1; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1);
+  color: rgba(255,255,255,.7); border-radius: 8px; padding: 7px 6px;
+  font-size: 11.5px; cursor: pointer; text-align: center; font-family: inherit;
+  transition: all .15s; display: block;
+}
+.yc-btn-sec:hover { background: rgba(255,255,255,.13); color: #fff; }
+
+/* 字幕框 */
+#yc-sub-text {
+  background: rgba(255,255,255,.035);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 8px; padding: 10px 12px;
+  font-size: 14px; line-height: 1.8; color: #f0f0ff;
+  min-height: 46px; word-break: break-all;
+  transition: border-color .2s;
+}
+#yc-sub-text:not(:empty) { border-color: rgba(99,102,241,.25); }
+
+/* 播放按钮 */
+.yc-btn-pri {
+  flex: 2;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border: none; color: #fff; border-radius: 9px;
+  padding: 9px 12px; font-size: 12.5px; font-weight: 600;
+  cursor: pointer; font-family: inherit; transition: all .15s;
+  box-shadow: 0 2px 12px rgba(99,102,241,.4);
+}
+.yc-btn-pri:hover:not(:disabled) { filter: brightness(1.12); transform: translateY(-1px); }
+.yc-btn-pri:disabled { opacity: .35; cursor: not-allowed; box-shadow: none; transform: none; }
+
+.yc-btn-dng {
+  flex: 1;
+  background: rgba(239,68,68,.12); border: 1px solid rgba(239,68,68,.25);
+  color: #f87171; border-radius: 9px; padding: 9px 8px;
+  font-size: 12.5px; font-weight: 600; cursor: pointer; font-family: inherit;
+  transition: all .15s;
+}
+.yc-btn-dng:hover:not(:disabled) { background: rgba(239,68,68,.22); }
+.yc-btn-dng:disabled { opacity: .28; cursor: not-allowed; }
+
+/* 朗读模式切换 */
+.yc-mode-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 8px;
+}
+.yc-mode-label { font-size: 11.5px; color: rgba(255,255,255,.45); }
+.yc-mode-btns { display: flex; gap: 4px; }
+.yc-mode-btn {
+  background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1);
+  color: rgba(255,255,255,.5); border-radius: 6px; padding: 4px 10px;
+  font-size: 11px; cursor: pointer; font-family: inherit; transition: all .15s;
+}
+.yc-mode-btn.active {
+  background: rgba(99,102,241,.25); border-color: rgba(99,102,241,.5);
+  color: #c4b5fd; font-weight: 600;
+}
+.yc-mode-btn:hover:not(.active) { background: rgba(255,255,255,.13); color: #fff; }
+
+/* 开关 */
+.yc-tog {
+  display: flex; align-items: center; gap: 9px;
+  cursor: pointer; font-size: 12px; color: rgba(255,255,255,.62);
+}
+.yc-tog input { display: none; }
+.yc-tog-sl {
+  width: 34px; height: 18px; background: rgba(255,255,255,.12);
+  border-radius: 18px; position: relative; flex-shrink: 0; transition: background .2s;
+}
+.yc-tog-sl::after {
+  content: ''; position: absolute; width: 12px; height: 12px; border-radius: 50%;
+  background: rgba(255,255,255,.45); top: 3px; left: 3px; transition: all .2s;
+}
+.yc-tog input:checked + .yc-tog-sl { background: #6366f1; }
+.yc-tog input:checked + .yc-tog-sl::after { transform: translateX(16px); background: #fff; }
+
+/* 设置行 */
+.yc-set-row {
+  display: flex; align-items: center; gap: 9px; margin-bottom: 8px;
+}
+.yc-set-row:last-child { margin-bottom: 0; }
+.yc-set-row label {
+  font-size: 11.5px; color: rgba(255,255,255,.45);
+  white-space: nowrap; min-width: 72px;
+}
+.yc-set-row select {
+  flex: 1; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1);
+  color: #e0e0f0; border-radius: 6px; padding: 4px 7px;
+  font-size: 11px; font-family: inherit; outline: none;
+}
+.yc-set-row input[type=range] {
+  flex: 1; accent-color: #8b5cf6; cursor: pointer; height: 3px;
+}
+
+/* 徽章 */
+.yc-badge-row { display: flex; gap: 7px; margin-top: 8px; align-items: center; }
+.yc-badge {
+  font-size: 10px; background: rgba(56,189,248,.12); border: 1px solid rgba(56,189,248,.22);
+  color: #38bdf8; border-radius: 20px; padding: 2px 9px; font-weight: 600;
+}
+.yc-badge-free {
+  font-size: 10px; background: rgba(74,222,128,.1); border: 1px solid rgba(74,222,128,.2);
+  color: #4ade80; border-radius: 20px; padding: 2px 9px; font-weight: 600;
+}
+
+/* 迷你条 */
+#yt-cn-mini {
+  display: none; align-items: center; justify-content: space-between;
+  padding: 9px 13px; gap: 7px;
+}
+#yc-mini-txt {
+  font-size: 11.5px; color: #c4b5fd; font-weight: 600;
+  flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+#yt-cn-mini button {
+  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.1);
+  color: rgba(255,255,255,.65); border-radius: 6px; padding: 4px 9px;
+  font-size: 12px; cursor: pointer; font-family: inherit; transition: all .15s;
+}
+#yt-cn-mini button:hover { background: rgba(255,255,255,.15); color: #fff; }
+
+/* ── OCR 翻译区块 ────────────────────────────────────────────── */
+#yc-ocr-sec { border-top: 1px solid rgba(255,255,255,0.07); }
+
+.yc-ocr-status {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 11px; color: rgba(255,255,255,0.45);
+  margin-bottom: 2px;
+}
+
+.yc-ocr-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,0.2); flex-shrink: 0;
+}
+.yc-ocr-dot-active  { background: #4ade80; animation: ocr-pulse 1.4s ease-in-out infinite; }
+.yc-ocr-dot-loading { background: #facc15; animation: ocr-pulse 0.8s ease-in-out infinite; }
+.yc-ocr-dot-error   { background: #f87171; }
+.yc-ocr-dot-idle    { background: rgba(255,255,255,0.2); }
+
+@keyframes ocr-pulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50%      { opacity:0.4; transform:scale(0.7); }
+}
+
+.yc-btn-ocr-start {
+  flex: 2;
+  background: linear-gradient(135deg, #0ea5e9, #6366f1);
+  border: none; color: #fff; border-radius: 9px;
+  padding: 8px 10px; font-size: 12px; font-weight: 600;
+  cursor: pointer; font-family: inherit; transition: all .15s;
+  box-shadow: 0 2px 10px rgba(14,165,233,0.3);
+}
+.yc-btn-ocr-start:hover:not(:disabled) { filter: brightness(1.1); transform: translateY(-1px); }
+.yc-btn-ocr-start:disabled { opacity: .35; cursor: not-allowed; box-shadow: none; transform: none; }
+
+.yc-btn-ocr-stop {
+  flex: 1;
+  background: rgba(239,68,68,.12); border: 1px solid rgba(239,68,68,.25);
+  color: #f87171; border-radius: 9px; padding: 8px 8px;
+  font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit;
+  transition: all .15s;
+}
+.yc-btn-ocr-stop:hover:not(:disabled) { background: rgba(239,68,68,.22); }
+.yc-btn-ocr-stop:disabled { opacity: .28; cursor: not-allowed; }
+
+/* OCR 结果展示 */
+.yc-ocr-result {
+  margin-top: 9px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 8px;
+  padding: 9px 11px;
+  font-size: 11.5px;
+  line-height: 1.65;
+}
+
+.yc-ocr-orig {
+  color: rgba(255,255,255,0.45);
+  font-style: italic;
+  margin-bottom: 4px;
+  word-break: break-word;
+}
+
+.yc-ocr-arrow {
+  font-size: 10px; color: rgba(255,255,255,0.25); margin: 3px 0;
+}
+
+.yc-ocr-zh {
+  color: #f0f0ff;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  word-break: break-all;
+}
+
+.yc-ocr-hint {
+  font-size: 10.5px;
+  color: rgba(255,255,255,0.28);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+/* ── OCR 安装引导 ───────────────────────────────────────────── */
+.yc-ocr-setup-box {
+  background: rgba(251,191,36,.07);
+  border: 1px solid rgba(251,191,36,.25);
+  border-radius: 8px; padding: 10px 12px; margin-top: 8px;
+}
+.yc-ocr-setup-title {
+  font-size: 12px; font-weight: 600; color: #fbbf24; margin-bottom: 4px;
+}
+.yc-ocr-setup-desc {
+  font-size: 11px; color: rgba(255,255,255,.5); margin-bottom: 8px; line-height: 1.5;
+}
+.yc-ocr-dl-btn {
+  width: 100%; background: rgba(251,191,36,.15); border: 1px solid rgba(251,191,36,.35);
+  color: #fbbf24; border-radius: 7px; padding: 6px 10px; font-size: 11.5px;
+  font-weight: 600; cursor: pointer; font-family: inherit; transition: all .15s;
+  margin-bottom: 8px;
+}
+.yc-ocr-dl-btn:hover { background: rgba(251,191,36,.25); }
+.yc-ocr-setup-steps {
+  font-size: 10.5px; color: rgba(255,255,255,.35); line-height: 1.8;
+  background: rgba(0,0,0,.2); border-radius: 6px; padding: 7px 9px;
+}
